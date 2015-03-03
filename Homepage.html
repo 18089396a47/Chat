@@ -1,14 +1,50 @@
 <html>
+
 <head>
-<title>Chat</title>
+
+<title>
+Chat
+</title>
+
 <meta hhtp-equiv="Content-Type" content="text/html;charset=windows-1251">
+<script src="Scripts.js"></script>
 <link rel="stylesheet" href="Style.css">
+
 </head>
+
 <div id="default">
-<input type="submit" value="Save" id="buttonSave">
-<input type="submit" value="Send" id="buttonSend">
-<textarea id="textArea">
+<div id="blockMessages">
+<textarea id="textAreaMessages">
 </textarea>
 </div>
+<div id="rightPanel">
+<div id="blockFirstName">
+<input type="text" id="text" placeholder="First Name">
+</div>
+<div id="blockLastName">
+<input type="text" id="text" placeholder="Last Name">
+</div>
+<div id="blockLogin">
+<input type="text" id="text" placeholder="Login">
+</div>
+<div id="blockEmail">
+<input type="text" id="text" placeholder="Email">
+</div>
+<div id="blockSave">
+<input type="submit" value="Save" id="buttonSave">
+
+</div>
+</div>
+<div id="blockSend">
+<input type="submit" value="Send" id="buttonSend" onclick="send_click();">
+</div>
+<div id="blockTextArea">
+<textarea id="textArea">
+</textarea>
+
+</div>
+</div>
+
 </body>
+
 </html>
