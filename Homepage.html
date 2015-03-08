@@ -1,50 +1,40 @@
 <html>
-
 <head>
-
-<title>
-Chat
-</title>
-
+<title>Chat</title>
 <meta hhtp-equiv="Content-Type" content="text/html;charset=windows-1251">
+<script src="jquery-1.11.2.min.js"></script>
 <script src="Scripts.js"></script>
 <link rel="stylesheet" href="Style.css">
-
 </head>
-
 <div id="default">
-<div id="blockMessages">
-<textarea id="textAreaMessages">
+	<div id="blockMessages">
+		<div id="AreaMessages"></div>
+	</div>
+	<div id="rightPanel">
+		<div id="blockFirstName">
+			<input type="text" id="text1" placeholder="First Name">
+		</div>
+		<div id="blockLastName">
+			<input type="text" id="text2" placeholder="Last Name">
+		</div>
+		<div id="blockLogin">
+			<input type="text" id="text3" placeholder="Login">
+		</div>
+		<div id="blockEmail">
+			<input type="text" id="text4" placeholder="Email">
+		</div>
+		<div id="blockSave">
+			<input type="submit" value="Save" id="buttonSave" onclick="save();">
+		</div>
+	</div>
+	<div id="blockSend">
+		<input type="submit" value="Send" id="buttonSend"
+			onclick="send_click();">
+	</div>
+	<div id="blockTextArea"">
+		<textarea id="textArea" onkeypress="return onKey(event);">
 </textarea>
+	</div>
 </div>
-<div id="rightPanel">
-<div id="blockFirstName">
-<input type="text" id="text" placeholder="First Name">
-</div>
-<div id="blockLastName">
-<input type="text" id="text" placeholder="Last Name">
-</div>
-<div id="blockLogin">
-<input type="text" id="text" placeholder="Login">
-</div>
-<div id="blockEmail">
-<input type="text" id="text" placeholder="Email">
-</div>
-<div id="blockSave">
-<input type="submit" value="Save" id="buttonSave">
-
-</div>
-</div>
-<div id="blockSend">
-<input type="submit" value="Send" id="buttonSend" onclick="send_click();">
-</div>
-<div id="blockTextArea">
-<textarea id="textArea">
-</textarea>
-
-</div>
-</div>
-
 </body>
-
 </html>

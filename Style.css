@@ -1,153 +1,133 @@
-body
-{
-font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-font-size:18px;
-
-background-color:#92d36e;
-
-background-image:url(Texture.png);
-
-background-repeat:repeat;
-
+body {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	background-color: #92d36e;
+	background-image: url(Texture.png);
+	background-repeat: repeat;
 }
 
-#default{
-
-background-color:#FFFFFF;
-
-position:relative;
-
-margin-left:-500px;
-
-width:1000px;
-
-top:10%;
-
-height:80%;
-
-left:50%;
-
-border-style:solid;
-
-border-width:thin;
-
-border-color:black;
-
+#default {
+	background-color: #FFFFFF;
+	position: relative;
+	margin-left: -500px;
+	width: 1000px;
+	top: 10%;
+	height: 80%;
+	left: 50%;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
 }
 
-#blockMessages{
-position:absolute;
-left:10%;
-top:10%;
-height:65%;
-width:65%;
-}
-#textAreaMessages{
-position:absolute;
-height:100%;
-width:100%;
-border-style:solid;
-
-border-width:thin;
-
-border-color:black;
-
-}
-#rightPanel{
-position:absolute;
-left:80%;
-height:100%;
-}
-#blockFirstName{
-position:absolute;
-top:40%;
-}
-#text{
-position:absolute;
-border-style:solid;
-
-border-width:thin;
-
-border-color:black;
-
-}
-#blockLastName{
-position:absolute;
-top:45%;
-}
-#blockLogin{
-position:absolute;
-top:50%;
-}
-#blockEmail{
-position:absolute;
-top:55%;
-}
-#blockSave{
-position:absolute;
-top:60%;
-}
-#buttonSave{
-
-background-color:#FFFFFF;
-
-text-align:center;
-cursor:hand;
-height:20px;
-
-width:50px;
-
-border-style:solid;
-
-border-width:thin;
-
-border-color:black;
-
+#blockMessages {
+	position: absolute;
+	left: 10%;
+	top: 10%;
+	height: 65%;
+	width: 65%;
 }
 
-#blockSend{
-position:absolute;
-left:80%;
-
-top:80%;
-
-}
-#buttonSend{
-
-background-color:#FFFFFF;
-
-text-align:center;
-
-height:100px;
-
-width:100px;
-
-cursor:hand;
-
-border-style:solid;
-
-border-width:thin;
-
-border-color:black;
-
+#AreaMessages {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
+	overflow-y:scroll;
 }
 
-#blockTextArea{
-position:absolute;
-left:10%;
-
-top:80%;
-width:65%;
+#rightPanel {
+	position: absolute;
+	left: 80%;
+	height: 100%;
 }
-#textArea{
 
-background-color:#FFFFFF;
+#blockFirstName {
+	position: absolute;
+	top: 40%;
+}
 
-height:100px;
-width:100%;
-border-style:solid;
+#text1, #text2, #text3, #text4 {
+	position: absolute;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
+}
 
-border-width:thin;
-border-color:black;
+#blockLastName {
+	position: absolute;
+	top: 45%;
+}
+
+#blockLogin {
+	position: absolute;
+	top: 50%;
+}
+
+#blockEmail {
+	position: absolute;
+	top: 55%;
+}
+
+#blockSave {
+	position: absolute;
+	top: 60%;
+}
+
+#buttonSave {
+	background-color: #FFFFFF;
+	text-align: center;
+	cursor: hand;
+	height: 20px;
+	width: 50px;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
+}
+
+#blockSend {
+	position: absolute;
+	left: 80%;
+	top: 80%;
+}
+
+#buttonSend {
+	background-color: #FFFFFF;
+	text-align: center;
+	height: 100px;
+	width: 100px;
+	cursor: hand;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
+}
+
+#buttonMessage {
+	position:relative;
+	float:right;
+	background-color: #FFFFFF;
+	text-align: center;
+	height: 20px;
+	width: 55px;
+	cursor: hand;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
+}
+
+#blockTextArea {
+	position: absolute;
+	left: 10%;
+	top: 80%;
+	width: 65%;
+}
+
+#textArea {
+	background-color: #FFFFFF;
+	height: 100px;
+	width: 100%;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
 }
