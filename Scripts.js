@@ -1,22 +1,25 @@
-var flagSave=false;
+var flagSave = false;
 var login;
 function send_click() {
-	if (flagSave==false) {
+	if (flagSave == false) {
 		return;
 	}
-	var textVal=$("#textArea").val().replace(/\s+/g,' ');
-	if ($("#textArea").val()=="" || $("#textArea").val()=="\n" || textVal==" ") {
+	var textVal = $("#textArea").val().replace(/\s+/g, ' ');
+	if ($("#textArea").val() == "" || $("#textArea").val() == "\n"
+			|| textVal == " ") {
 		$("#textArea").val('');
 		return;
 	}
-	$("#textArea").val($("#textArea").val().replace(/\s/g,'&nbsp;'));
+	$("#textArea").val($("#textArea").val().replace(/\s/g, '&nbsp;'));
 	var edit = '<button class="edit-button" id="buttonMessage" onclick="edit(this)">edit</button>';
 	var remove = '<button class="remove-button" id="buttonMessage" onclick="del(this)">remove</button>';
 	$("#AreaMessages").append(
-			'<div><span class="span1">' + login + ': </span><span class="span2">' + $("#textArea").val() + '</span>' + edit + remove
-					+ '</div>');
+			'<div><span class="span1">' + login
+					+ ': </span><span class="span2">' + $("#textArea").val()
+					+ '</span>' + edit + remove + '</div>');
 	$("#textArea").val('');
-	$("#AreaMessages").prop("scrollTop",$("#AreaMessages").prop("scrollHeight"));
+	$("#AreaMessages").prop("scrollTop",
+			$("#AreaMessages").prop("scrollHeight"));
 }
 
 function edit(obj) {
@@ -31,9 +34,10 @@ function del(obj) {
 }
 
 function save() {
-	if ($("#text1").val() && $("#text2").val() && $("#text3").val() && $("#text4").val()) {
-		flagSave=true;
-		login=$("#text3").val();
+	if ($("#text1").val() && $("#text2").val() && $("#text3").val()
+			&& $("#text4").val()) {
+		flagSave = true;
+		login = $("#text3").val();
 	}
 }
 

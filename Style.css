@@ -34,7 +34,7 @@ body {
 	border-style: solid;
 	border-width: thin;
 	border-color: black;
-	overflow-y:scroll;
+	overflow-y: scroll;
 }
 
 #rightPanel {
@@ -104,8 +104,8 @@ body {
 }
 
 #buttonMessage {
-	position:relative;
-	float:right;
+	position: relative;
+	float: right;
 	background-color: #FFFFFF;
 	text-align: center;
 	height: 20px;
