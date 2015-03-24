@@ -1,9 +1,16 @@
 var flagSave = false;
 var login;
+var uniqueId = function() {
+	var date = Date.now();
+	var random = Math.random() * Math.random();
+	return Math.floor(date * random).toString();
+};
+
 var theMessage = function(text, name) {
 	return {
 		message : text,
-		login : name
+		login : name,
+		id : uniqueId()
 	}
 }
 var listMessages = [];
@@ -18,13 +25,13 @@ function send_click() {
 		return;
 	}
 	$("#textArea").val($("#textArea").val().replace(/\s/g, '&nbsp;'));
-	var edit = '<button class="edit-button" id="buttonMessage" onclick="edit(this)">edit</button>';
-	var remove = '<button class="remove-button" id="buttonMessage" onclick="del(this)">remove</button>';
+	var newMessage = theMessage($("#textArea").val(), login);
+	var edit = '<button class="' + newMessage.id + 'e" id="buttonMessage" onclick="edit(this)">edit</button>';
+	var remove = '<button class="' + newMessage.id + 'r" id="buttonMessage" onclick="del(this)">remove</button>';
 	$("#AreaMessages").append(
 			'<div><span class="span1">' + login
 					+ ': </span><span class="span2">' + $("#textArea").val()
 					+ '</span>' + edit + remove + '</div>');
-	var newMessage = theMessage($("#textArea").val(), login);
 	$("#textArea").val('');
 	$("#AreaMessages").prop("scrollTop",
 			$("#AreaMessages").prop("scrollHeight"));
@@ -36,10 +43,26 @@ function edit(obj) {
 	var span = $(obj).parent().find('.span2');
 	span.prop("contenteditable",
 			span.prop("contenteditable") == "true" ? "false" : "true");
-
+	if (span.prop("contenteditable") == "false") {
+		var id = obj.className.substring(0, obj.className.length - 1);
+		for (var i=0;i<listMessages.length;i++)
+			if (listMessages[i].id == id) {
+				addMessage(theMessage(span.text(), listMessages[i].login));
+				listMessages.splice(i,1);
+				break;
+			}
+		store(listMessages);
+	}
 }
 
 function del(obj) {
+	var id = obj.className.substring(0, obj.className.length - 1);
+	for (var i=0;i<listMessages.length;i++)
+		if (listMessages[i].id == id) {
+			listMessages.splice(i,1);
+			break;
+		}
+	store(listMessages);
 	$(obj).parent().remove();
 }
 
@@ -83,10 +106,10 @@ function store(listMessages) {
 }
 
 function output(message) {
-	var edit = '<button class="edit-button" id="buttonMessage" onclick="edit(this)">edit</button>';
-	var remove = '<button class="remove-button" id="buttonMessage" onclick="del(this)">remove</button>';
+	var edit = '<button class="' + message.id + 'e" id="buttonMessage" onclick="edit(this)">edit</button>';
+	var remove = '<button class="' + message.id + 'r" id="buttonMessage" onclick="del(this)">remove</button>';
 	$("#AreaMessages").append(
 			'<div><span class="span1">' + message.login
-					+ ': </span><span class="span2">' + message.message
+					+ ': </span><span class="span2" id="' + message.id + '">' + message.message
 					+ '</span>' + edit + remove + '</div>');
 }
