@@ -1,0 +1,112 @@
+GET http://localhost:8888/chat?token=TN11EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Mar 2015 17:40:10 GMT
+Access-control-allow-origin: *
+Content-length: 56
+
+{"messages":["af","hdfhs","5","abcde"],"token":"TN11EN"}
+
+------------------------------------------------------------------
+
+GET http://localhost:8888/chat?token=TN43EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Mar 2015 17:40:10 GMT
+Access-control-allow-origin: *
+Content-length: 32
+
+{"messages":[],"token":"TN11EN"}
+
+------------------------------------------------------------------
+
+GET http://localhost:8888/chat?token=TN43EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Mar 2015 17:40:10 GMT
+Access-control-allow-origin: *
+Content-length: 32
+
+{"messages":[],"token":"TN11EN"}
+
+------------------------------------------------------------------
+
+GET http://localhost:8888/chat?token=TN43EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Mar 2015 17:40:10 GMT
+Access-control-allow-origin: *
+Content-length: 32
+
+{"messages":[],"token":"TN11EN"}
+
+------------------------------------------------------------------
+
+GET http://localhost:8888/chat?token=TN43EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Mar 2015 17:40:10 GMT
+Access-control-allow-origin: *
+Content-length: 32
+
+{"messages":[],"token":"TN11EN"}
+
+------------------------------------------------------------------
+
+GET http://localhost:8888/chat?token=TN43EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Mar 2015 17:40:10 GMT
+Access-control-allow-origin: *
+Content-length: 32
+
+{"messages":[],"token":"TN11EN"}
+
+------------------------------------------------------------------
+
+GET http://localhost:8888/chat?token=TN43EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Mar 2015 17:40:10 GMT
+Access-control-allow-origin: *
+Content-length: 32
+
+{"messages":[],"token":"TN11EN"}
+
+------------------------------------------------------------------
+
