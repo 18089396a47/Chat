@@ -1,16 +1,12 @@
-var flagSave = false;
+var token="TN11EN";
+var id=null;
+var flagSave=false;
 var login;
-var uniqueId = function() {
-	var date = Date.now();
-	var random = Math.random() * Math.random();
-	return Math.floor(date * random).toString();
-};
-
-var theMessage = function(text, name) {
+var theMessage = function(text, name, id) {
 	return {
 		message : text,
-		login : name,
-		id : uniqueId()
+		name : name,
+		id : id
 	}
 }
 var listMessages = [];
@@ -25,44 +21,44 @@ function send_click() {
 		return;
 	}
 	$("#textArea").val($("#textArea").val().replace(/\s/g, '&nbsp;'));
-	var newMessage = theMessage($("#textArea").val(), login);
-	var edit = '<button class="' + newMessage.id + 'e" id="buttonMessage" onclick="edit(this)">edit</button>';
-	var remove = '<button class="' + newMessage.id + 'r" id="buttonMessage" onclick="del(this)">remove</button>';
-	$("#AreaMessages").append(
-			'<div><span class="span1">' + login
-					+ ': </span><span class="span2">' + $("#textArea").val()
-					+ '</span>' + edit + remove + '</div>');
-	$("#textArea").val('');
-	$("#AreaMessages").prop("scrollTop",
-			$("#AreaMessages").prop("scrollHeight"));
-	addMessage(newMessage);
-	store(listMessages);
+	var m = theMessage($("#textArea").val(), login, id);
+	if (id == null) {
+		ajax('POST', 'http://localhost:999/chat?token=' + token, JSON.stringify(m), function(error) {
+			alert(error)
+			}, function(serverResponce) {
+		});
+	}
+	else {
+		ajax('PUT', 'http://localhost:999/chat?token=' + token, JSON.stringify(m), function(error) {
+			alert(error)
+			}, function(serverResponce) {
+		});
+	}
+	//var newMessage = theMessage($("#textArea").val(), login);
+	//var edit = '<button class="' + newMessage.id + 'e" id="buttonMessage" onclick="edit(this)">edit</button>';
+	//var remove = '<button class="' + newMessage.id + 'r" id="buttonMessage" onclick="del(this)">remove</button>';
+	//$("#AreaMessages").append(
+			//'<div><span class="span1">' + login
+					//+ ': </span><span class="span2">' + $("#textArea").val()
+					//+ '</span>' + edit + remove + '</div>');
+	//$("#textArea").val('');
+	//$("#AreaMessages").prop("scrollTop",
+			//$("#AreaMessages").prop("scrollHeight"));
+	//addMessage(newMessage);
+//	store(listMessages);
 }
 
 function edit(obj) {
-	var span = $(obj).parent().find('.span2');
-	span.prop("contenteditable",
-			span.prop("contenteditable") == "true" ? "false" : "true");
-	if (span.prop("contenteditable") == "false") {
-		var id = obj.className.substring(0, obj.className.length - 1);
-		for (var i=0;i<listMessages.length;i++)
-			if (listMessages[i].id == id) {
-				addMessage(theMessage(span.text(), listMessages[i].login));
-				listMessages.splice(i,1);
-				break;
-			}
-		store(listMessages);
-	}
+	id = $(obj).attr('id').substring(login.length, $(obj).attr('id').length);
+	$(obj).parent().remove();
 }
 
 function del(obj) {
-	var id = obj.className.substring(0, obj.className.length - 1);
-	for (var i=0;i<listMessages.length;i++)
-		if (listMessages[i].id == id) {
-			listMessages.splice(i,1);
-			break;
-		}
-	store(listMessages);
+	var mId = $(obj).attr('id');
+	ajax('DELETE', 'http://localhost:999/chat?token=' + token, function(error) {
+			alert(error)
+			}, function(serverResponce) {
+		});
 	$(obj).parent().remove();
 }
 
@@ -74,6 +70,32 @@ function save() {
 	}
 }
 
+function ajax(method, url, data, continueWith , continueWithError) {
+	var xmlhr = new XMLHttpRequest();
+	xmlhr.open(method, url, true);
+	xmlhr.onload = function () {
+		if (xmlhr.readyState !== 4)
+            return;
+		if(xmlhr.status != 200) {
+			continueWithError('Error on the server side, response ' + xhr.status);
+			return;
+			}
+		if(isError(xmlhr.responseText)) {
+			continueWithError('Error on the server side, response ' + xhr.responseText);
+			return;
+			}
+		continueWith(xmlhr.responseText);
+	}
+	xmlhr.ontimeout = function () {
+		continueWithError('Server timed out !');
+	}
+	xmlhr.onerror = function (e) {
+		var errMsg = 'Server connection error !\n'+'\n'+'Check if \n'+'- server is active\n'+'- server sends header "Access-Control-Allow-Origin:*"';
+		continueWithError(errMsg);
+	}
+	xmlhr.send(data);
+}
+
 function onKey(event) {
 	if (event.keyCode == 13) {
 		send_click();
@@ -82,13 +104,32 @@ function onKey(event) {
 }
 
 function run() {
-	var allMessages = restore();
-	if (allMessages == null) {
-		return;
+	setInterval(function() {
+		ajax('GET', 'http://localhost:999/chat?token=' + token, function(error){ alert(error)}, getLastMessage)
+	}, 666);
+}
+
+function getLastMessage(serverResponse) {
+	var m = JSON.parse(serverResponse);
+	doEvents(m.event);
+	if (m.token.toString != "TN11EN") {
+		token = m.token;
 	}
-	for (var i = 0; i < allMessages.length; i++) {
-		addMessage(allMessages[i]);
-		output(allMessages[i]);
+}
+
+function doEvents(events) {
+	for (var i = 0;i < events.size();i++) {
+		doEvent(events[i]);
+	}
+}
+
+function doEvent(event) {
+	if (event.type == "add") {
+		output(JSON.parse(event.message));
+	} else if(event.type == "edit") {
+		
+	} else if(event.type == "delete") {
+		
 	}
 }
 
@@ -96,20 +137,11 @@ function addMessage(message) {
 	listMessages.push(message);
 }
 
-function restore() {
-	var item = localStorage.getItem("listMessages");
-	return item && JSON.parse(item);
-}
-
-function store(listMessages) {
-	localStorage.setItem("listMessages", JSON.stringify(listMessages));
-}
-
 function output(message) {
-	var edit = '<button class="' + message.id + 'e" id="buttonMessage" onclick="edit(this)">edit</button>';
-	var remove = '<button class="' + message.id + 'r" id="buttonMessage" onclick="del(this)">remove</button>';
+	var edit = '<button id="buttonMessage" onclick="edit(this)">edit</button>';
+	var remove = '<button id="buttonMessage" onclick="del(this)">remove</button>';
 	$("#AreaMessages").append(
-			'<div><span class="span1">' + message.login
+			'<div><span class="span1">' + message.user
 					+ ': </span><span class="span2" id="' + message.id + '">' + message.message
 					+ '</span>' + edit + remove + '</div>');
 }
