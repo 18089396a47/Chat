@@ -131,3 +131,14 @@ body {
 	border-width: thin;
 	border-color: black;
 }
+
+#overlay {
+	background-color: #000;
+	height: 100%;
+	width: 100%;
+	opacity: 0.5;
+	left: 0;
+	top: 0;
+	position: fixed;
+	z-index: 100;
+}

@@ -34,6 +34,7 @@ function send_click() {
 			alert(error)
 		});
 	}
+	$("#textArea").val('');
 	//var newMessage = theMessage($("#textArea").val(), login);
 	//var edit = '<button class="' + newMessage.id + 'e" id="buttonMessage" onclick="edit(this)">edit</button>';
 	//var remove = '<button class="' + newMessage.id + 'r" id="buttonMessage" onclick="del(this)">remove</button>';
@@ -83,12 +84,14 @@ function ajax(method, url, data, continueWith , continueWithError) {
 			continueWithError('Error on the server side, response ' + xhr.responseText);
 			return;
 			}
+		whiteout();
 		continueWith(xmlhr.responseText);
 	}
 	xmlhr.ontimeout = function () {
 		continueWithError('Server timed out !');
 	}
 	xmlhr.onerror = function (e) {
+		blackout();
 		var errMsg = 'Server connection error !\n'+'\n'+'Check if \n'+'- server is active\n'+'- server sends header "Access-Control-Allow-Origin:*"';
 		continueWithError(errMsg);
 	}
@@ -155,4 +158,16 @@ function output(message) {
 			'<div id="' + message.id + '"><span class="span1">' + message.name
 					+ ': </span><span class="span2" id="' + message.id + '">' + message.message
 					+ '</span>' + edit + remove + '</div>');
+}
+
+function blackout() {
+	if (!$("div").is("#overlay")) {
+		$("#default").append("<div id=\"overlay\"></div>");
+	}
+}
+
+function whiteout() {
+	if ($("div").is("#overlay")) {
+		$("#default").find("#overlay").remove();
+	}
 }
