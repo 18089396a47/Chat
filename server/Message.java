@@ -7,26 +7,36 @@ import java.util.Date;
 
 public class Message {
 	public String message, name;
-	public long id;
+	public Long id;
 	
 	Message() {
 		message = "";
 		name = "";
 		Date d = new Date();
-		id = d.getTime();
+		id = new Long(d.getTime());
 	}
 	
 	Message(String message , String name) {
 		this.message = message;
 		this.name = name;
 		Date d = new Date();
-		id = d.getTime();
+		id = new Long(d.getTime());
+	}
+	
+	public void setId() {
+		Date d = new Date();
+		id = new Long(d.getTime());
 	}
 	
 	public void toMessage(String m) throws ParseException{
 		this.message = (String)getJSONObject(m).get("message");
 		this.name = (String)getJSONObject(m).get("name");
-		this.id = (long)getJSONObject(m).get("id");
+		if (getJSONObject(m).get("id") == null) {
+			this.id = null;
+		}
+		else {
+			this.id = Long.parseLong((String)getJSONObject(m).get("id"));
+		}
 	}
 	
 	public JSONObject getJSONObject(String js) throws ParseException{
@@ -34,8 +44,7 @@ public class Message {
 		return (JSONObject)jsParser.parse(js.trim());
 	}
 	
-	@Override
-	public String toString() {
+	public String toJsonString() {
 		JSONObject jsObject = new JSONObject();
 		jsObject.put("message", message);
 		jsObject.put("name", name);

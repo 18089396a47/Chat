@@ -23,15 +23,15 @@ function send_click() {
 	$("#textArea").val($("#textArea").val().replace(/\s/g, '&nbsp;'));
 	var m = theMessage($("#textArea").val(), login, id);
 	if (id == null) {
-		ajax('POST', 'http://localhost:999/chat?token=' + token, JSON.stringify(m), function(error) {
+		ajax('POST', 'http://localhost:999/chat', JSON.stringify(m), function(serverResponce) {
+		}, function(error) {
 			alert(error)
-			}, function(serverResponce) {
 		});
 	}
 	else {
-		ajax('PUT', 'http://localhost:999/chat?token=' + token, JSON.stringify(m), function(error) {
+		ajax('PUT', 'http://localhost:999/chat', JSON.stringify(m), function(serverResponce) {
+		}, function(error) {
 			alert(error)
-			}, function(serverResponce) {
 		});
 	}
 	//var newMessage = theMessage($("#textArea").val(), login);
@@ -49,15 +49,14 @@ function send_click() {
 }
 
 function edit(obj) {
-	id = $(obj).attr('id').substring(login.length, $(obj).attr('id').length);
-	$(obj).parent().remove();
+	id = $(obj).parent().attr('id');
 }
 
 function del(obj) {
-	var mId = $(obj).attr('id');
-	ajax('DELETE', 'http://localhost:999/chat?token=' + token, function(error) {
+	var mId = $(obj).parent().attr('id');
+	ajax('DELETE', 'http://localhost:999/chat', JSON.stringify(theMessage("", "", mId)), function(serverResponce) {
+		}, function(error) {
 			alert(error)
-			}, function(serverResponce) {
 		});
 	$(obj).parent().remove();
 }
@@ -96,6 +95,18 @@ function ajax(method, url, data, continueWith , continueWithError) {
 	xmlhr.send(data);
 }
 
+function isError(text) {
+	if(text == "") {
+		return false;
+	}
+	try {
+		var obj = JSON.parse(text);
+		return !!obj.error;
+	} catch(e) {
+		return true;
+	}
+}
+
 function onKey(event) {
 	if (event.keyCode == 13) {
 		send_click();
@@ -105,7 +116,7 @@ function onKey(event) {
 
 function run() {
 	setInterval(function() {
-		ajax('GET', 'http://localhost:999/chat?token=' + token, function(error){ alert(error)}, getLastMessage)
+		ajax('GET', 'http://localhost:999/chat?token=' + token, function(error){alert(error)}, getLastMessage)
 	}, 666);
 }
 
@@ -118,7 +129,7 @@ function getLastMessage(serverResponse) {
 }
 
 function doEvents(events) {
-	for (var i = 0;i < events.size();i++) {
+	for (var i = 0;i < events.length;i++) {
 		doEvent(events[i]);
 	}
 }
@@ -127,9 +138,9 @@ function doEvent(event) {
 	if (event.type == "add") {
 		output(JSON.parse(event.message));
 	} else if(event.type == "edit") {
-		
+		$("#" + JSON.parse(event.message).id).find(".span2").text(JSON.parse(event.message).message);
 	} else if(event.type == "delete") {
-		
+		$("#" + JSON.parse(event.message).id).remove();
 	}
 }
 
@@ -141,7 +152,7 @@ function output(message) {
 	var edit = '<button id="buttonMessage" onclick="edit(this)">edit</button>';
 	var remove = '<button id="buttonMessage" onclick="del(this)">remove</button>';
 	$("#AreaMessages").append(
-			'<div><span class="span1">' + message.user
+			'<div id="' + message.id + '"><span class="span1">' + message.name
 					+ ': </span><span class="span2" id="' + message.id + '">' + message.message
 					+ '</span>' + edit + remove + '</div>');
 }

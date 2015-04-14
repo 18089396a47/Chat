@@ -11,6 +11,9 @@ public class Event {
 	}
 	@Override
 	public String toString() {
-		return message.toString();
+		JSONObject jsObject = new JSONObject();
+		jsObject.put("message", message.toJsonString());
+		jsObject.put("type", type);
+		return jsObject.toJSONString();
 	}
 }

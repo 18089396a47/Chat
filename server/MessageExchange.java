@@ -18,10 +18,10 @@ public class MessageExchange {
         return (Integer.valueOf(token.substring(2, token.length() - 2)) - 11) / 8;
     }
 
-    public String getServerResponse(List<Message> messages) {
+    public String getServerResponse(List<Event> events,int pos) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("messages", messages);
-        jsonObject.put("token", getToken(messages.size()));
+        jsonObject.put("event", events);
+        jsonObject.put("token", getToken(pos));
         return jsonObject.toJSONString();
     }
 
@@ -33,7 +33,7 @@ public class MessageExchange {
 
     public Message getClientMessage(InputStream inputStream) throws ParseException {
         Message m = new Message();
-        m.toMessage((String)getJSONObject(inputStreamToString(inputStream)).get("message"));
+        m.toMessage(inputStreamToString(inputStream));
         return m;
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Server implements HttpHandler {
-    private List<Message> history = new ArrayList<Message>();
+    private List<Event> history = new ArrayList<Event>();
     private MessageExchange messageExchange = new MessageExchange();
 
     public static void main(String[] args) {
@@ -66,7 +66,7 @@ public class Server implements HttpHandler {
             String token = map.get("token");
             if (token != null && !"".equals(token)) {
                 int index = messageExchange.getIndex(token);
-                return messageExchange.getServerResponse(history.subList(index, history.size()));
+                return messageExchange.getServerResponse(history.subList(index, history.size()), history.size());
             } else {
                 return "Token query parameter is absent in url: " + query;
             }
@@ -76,41 +76,32 @@ public class Server implements HttpHandler {
 
     private void doPost(HttpExchange httpExchange) {
         try {
-            Message message = messageExchange.getClientMessage(httpExchange.getRequestBody());
-            System.out.println("Get Message from User : " + message);
-            history.add(message);
+            Event e = new Event("add", messageExchange.getClientMessage(httpExchange.getRequestBody()));
+            e.message.setId();
+            history.add(e);
         } catch (ParseException e) {
-            System.err.println("Invalid user message: " + httpExchange.getRequestBody() + " " + e.getMessage());
+            System.err.println("Invalid user message post: " + httpExchange.getRequestBody() + " " + e.getMessage());
         }
     }
     
     private void doPut(HttpExchange httpExchange) {
     	try {
-    		Message message = messageExchange.getClientMessage(httpExchange.getRequestBody());
-    		System.out.println("Edit Message from User : " + message);
-    		for (int i = 0; i < history.size(); i ++) {
-    			if (history.get(i).id == message.id) {
-    				history.get(i).message = message.message;
-    				return;
-    			}
-    		}
+            Event e = new Event("edit", messageExchange.getClientMessage(httpExchange.getRequestBody()));
+			history.add(e);
     	} catch (ParseException e) {
-    		System.err.println("Invalid user message: " + httpExchange.getRequestBody() + " " + e.getMessage());
+    		System.err.println("Invalid user message put: " + httpExchange.getRequestBody() + " " + e.getMessage());
     	}
     }
     
     private void doDelete(HttpExchange httpExchange) {
-    	try {
-    		Message message = messageExchange.getClientMessage(httpExchange.getRequestBody());
-    		System.out.println("Delete Message from User : " + message);
-    		for (int i = 0; i < history.size(); i ++) {
-    			if (history.get(i).id == message.id) {
-    				history.remove(i);
-    				return;
-    			}
-    		}    			
+    	try {System.out.println(2);
+            Event e = new Event("delete", messageExchange.getClientMessage(httpExchange.getRequestBody()));
+    		history.add(e);
+    		for (Event ee : history) {
+    			System.out.println(ee.message.toJsonString());
+    		}
     	} catch (ParseException e) {
-    		System.err.println("Invalid user message: " + httpExchange.getRequestBody() + " " + e.getMessage());
+    		System.err.println("Invalid user message delete: " + httpExchange.getRequestBody() + " " + e.getMessage());
     	}
     }
 
@@ -119,9 +110,12 @@ public class Server implements HttpHandler {
             byte[] bytes = response.getBytes();
             Headers headers = httpExchange.getResponseHeaders();
             headers.add("Access-Control-Allow-Origin","*");
+        	if("OPTIONS".equals(httpExchange.getRequestMethod())) {
+        		headers.add("Access-Control-Allow-Methods","PUT, DELETE, POST, GET, OPTIONS");
+        	}
             httpExchange.sendResponseHeaders(200, bytes.length);
             OutputStream os = httpExchange.getResponseBody();
-            os.write( bytes);
+            os.write(bytes);
             os.flush();
             os.close();
         } catch (IOException e) {
